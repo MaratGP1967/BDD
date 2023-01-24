@@ -9,6 +9,7 @@ import ru.netology.data.DataHelper;
 import ru.netology.page.*;
 
 import static java.lang.Integer.valueOf;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class TemplateSteps {
@@ -48,4 +49,19 @@ public class TemplateSteps {
         }
     }
 
+    @И("пользователь попадает на страницу 'Пополнение карты'")
+    public void transferAccountCheck() {
+        refillPage = personalAreaPage.getMaxCardBalance();
+    }
+
+    @Тогда("пользователь вводит сумму перевода {string} рублей и номер карты {string}")
+    public void enteringDetails(String amount, String cardCode) {
+        personalAreaPage = refillPage.getStartRefillPage(DataHelper.getCardNumberOur(cardCode), Integer.parseInt(amount.replaceAll("\\s", "")));
+    }
+    @И("происходит успешное пополнение, баланс 1 карты из списка на странице 'Личный кабинет' равен {string} рублей")
+    public void transferCheck(String sum) {
+        int expected = Integer.parseInt(sum.replaceAll("\\s", ""));
+        int actual = personalAreaPage.getCardBalanceFirst();
+        assertEquals(expected, actual);
+    }
 }

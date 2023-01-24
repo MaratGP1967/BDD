@@ -17,20 +17,9 @@ public class PersonalAreaPage {
     private final String idOne = "92df3f1c-a033-48e6-8390-206f6b1f56c0";
     private final String idTwo = "0f3f5c2a-249e-4c3d-8287-09f7a039391d";
     private static int cardBalanceMax;
-    private static int cardBalanceMin;
     private static String numberMax;
-    private static int differenceToReduce = 250;
-
-    public static int getDifferenceToReduce() {
-        return differenceToReduce;
-    }
-
     public static int getCardBalanceMax() {
         return cardBalanceMax;
-    }
-
-    public static int getCardBalanceMin() {
-        return cardBalanceMin;
     }
 
     public static String getNumberMax() {
@@ -38,16 +27,14 @@ public class PersonalAreaPage {
     }
 
     public RefillPage getMaxCardBalance() {
-        if (getCardBalance(idOne) >= getCardBalance(idTwo)) {
-            cardBalanceMax = getCardBalance(idOne);
-            cardBalanceMin = getCardBalance(idTwo);
-            numberMax = "first";
-            secondBalanceButton.click();
-        } else {
+        if (getCardBalance(idTwo) >= getCardBalance(idOne)) {
             cardBalanceMax = getCardBalance(idTwo);
-            cardBalanceMin = getCardBalance(idOne);
             numberMax = "second";
             firstBalanceButton.click();
+        } else {
+            cardBalanceMax = getCardBalance(idOne);
+            numberMax = "first";
+            secondBalanceButton.click();
         }
         return new RefillPage();
     }
@@ -67,10 +54,6 @@ public class PersonalAreaPage {
 
     public int getCardBalanceFirst() {
         return getCardBalance(idOne);
-    }
-
-    public int getCardBalanceSecond() {
-        return getCardBalance(idTwo);
     }
 
 }

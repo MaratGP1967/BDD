@@ -27,7 +27,7 @@ public class DataHelper {
 
     @Value
     public static class CardNumber {
-        private String code;
+        private String cardCode;
     }
 
     public static CardNumber getCardNumberOne() {
@@ -35,5 +35,8 @@ public class DataHelper {
     }
     public static CardNumber getCardNumberTwo() {
         return new CardNumber("5559 0000 0000 0002");
+    }
+    public static CardNumber getCardNumberOur(String cardCode) {
+        return new CardNumber(cardCode);
     }
 }

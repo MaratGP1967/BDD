@@ -12,12 +12,15 @@ public class PersonalAreaPage {
     private ElementsCollection cards = $$(".list__item div");
     private final String balanceStart = "баланс: ";
     private final String balanceFinish = " р.";
-    private SelenideElement firstBalanceButton = $("[data-test-id='92df3f1c-a033-48e6-8390-206f6b1f56c0'] button");
-    private SelenideElement secondBalanceButton = $("[data-test-id='0f3f5c2a-249e-4c3d-8287-09f7a039391d'] button");
-    private final String idOne = "92df3f1c-a033-48e6-8390-206f6b1f56c0";
-    private final String idTwo = "0f3f5c2a-249e-4c3d-8287-09f7a039391d";
+    private final String locatorOne = "[data-test-id='92df3f1c-a033-48e6-8390-206f6b1f56c0'] button";
+    private final String locatorTwo ="[data-test-id='0f3f5c2a-249e-4c3d-8287-09f7a039391d'] button";
+    private SelenideElement firstBalanceButton = $(locatorOne);
+    private SelenideElement secondBalanceButton = $(locatorTwo);
+    private final String idOne = locatorOne.substring(locatorOne.indexOf('\'') + 1, locatorOne.lastIndexOf('\''));
+    private final String idTwo = locatorTwo.substring(locatorTwo.indexOf('\'') + 1, locatorTwo.lastIndexOf('\''));
     private static int cardBalanceMax;
     private static String numberMax;
+
     public static int getCardBalanceMax() {
         return cardBalanceMax;
     }

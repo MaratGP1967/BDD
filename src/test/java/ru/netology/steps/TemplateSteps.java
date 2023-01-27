@@ -16,7 +16,6 @@ public class TemplateSteps {
     private static LoginPage loginPage;
     private static DashboardPage dashboardPage;
     private static VerificationPage verificationPage;
-    private static PersonalAreaPage personalAreaPage;
     private static RefillPage refillPage;
 
     @Пусть("открыта страница с формой авторизации {string}")
@@ -33,35 +32,30 @@ public class TemplateSteps {
     public void setValidCode(String verificationCode) {
         dashboardPage = verificationPage.validVerify(DataHelper.getVerificationCodeFor(verificationCode));
     }
-
-    @И("происходит успешная авторизация и пользователь попадает на страницу 'Личный кабинет'")
-    public void verifyDashboardPage() {
-        personalAreaPage = dashboardPage.verifyIsDashboardPage();
+    @И("происходит успешная авторизация, пользователь попадает на страницу 'Личный кабинет'")
+    public void shouldBePersonalArea() {
+        dashboardPage.verifyIsDashboardPage();
     }
-
     @И("баланс первой карты пользователя равен {string} рублей")
     public void cardAccountCheck(String sum) {
-        refillPage = personalAreaPage.getMaxCardBalance();
-        if (PersonalAreaPage.getNumberMax().equals("first")) {
-            refillPage.getStartRefillPage(DataHelper.getCardNumberOne(), PersonalAreaPage.getCardBalanceMax() - Integer.parseInt(sum.replaceAll("\\s", "")));
-        } else if (PersonalAreaPage.getNumberMax().equals("second")) {
-            refillPage.getStartRefillPage(DataHelper.getCardNumberTwo(), PersonalAreaPage.getCardBalanceMax() - Integer.parseInt(sum.replaceAll("\\s", "")));
-        }
+        refillPage = dashboardPage.getCardBalanceButton();
+        refillPage.getStartRefillPage(DataHelper.getCardNumber(refillPage.lookingForCardNumber()), DataHelper.CardValueSum / 2 + Math.abs(DataHelper.CardValueSub) / 2 - Integer.parseInt(sum.replaceAll("\\s", "")));
     }
 
     @И("пользователь попадает на страницу 'Пополнение карты'")
     public void transferAccountCheck() {
-        refillPage = personalAreaPage.getMaxCardBalance();
+        refillPage = dashboardPage.getCardBalanceButton();
     }
 
     @Тогда("пользователь вводит сумму перевода {string} рублей и номер карты {string}")
     public void enteringDetails(String amount, String cardCode) {
-        personalAreaPage = refillPage.getStartRefillPage(DataHelper.getCardNumberOur(cardCode), Integer.parseInt(amount.replaceAll("\\s", "")));
+        dashboardPage = refillPage.getStartRefillPage(DataHelper.getCardNumberOur(cardCode), Integer.parseInt(amount.replaceAll("\\s", "")));
     }
+
     @И("происходит успешное пополнение, баланс 1 карты из списка на странице 'Личный кабинет' равен {string} рублей")
     public void transferCheck(String sum) {
         int expected = Integer.parseInt(sum.replaceAll("\\s", ""));
-        int actual = personalAreaPage.getCardBalanceFirst();
+        int actual = dashboardPage.getCardBalanceFirst();
         assertEquals(expected, actual);
     }
 }
